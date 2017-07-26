@@ -1,4 +1,4 @@
-package com.xyz.vending.test;
+package com.xyz.vendingmachine.test;
 
 import java.util.Scanner;
 

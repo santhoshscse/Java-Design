@@ -1,4 +1,4 @@
-package com.xyz.vending.exception;
+package com.xyz.vendingmachine.exception;
 
 public class VendingException extends Exception {
 	public enum ErroCode {
