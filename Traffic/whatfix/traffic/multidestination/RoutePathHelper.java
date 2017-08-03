@@ -47,7 +47,7 @@ public class RoutePathHelper {
 		Route route = SingleDestinationTrafficSolution
 				.getShortestRoute(getAsOrbitList(tmpRouteMatrix.getListOfOrbits(), orbitMap), vehicle, weather);
 		tmpRouteMatrix.setBestOrbit(route.getOrbit().getName());
-		// routeMatrix[j][i].setBestOrbit(route.getOrbit().getName());
+		routeMatrix[j][i].setBestOrbit(route.getOrbit().getName());
 		return route.getOrbit().getName();
 	}
 
