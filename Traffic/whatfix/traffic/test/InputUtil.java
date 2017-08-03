@@ -6,57 +6,36 @@ import java.util.List;
 
 import whatfix.traffic.multidestination.Location;
 import whatfix.traffic.multidestination.RoutePath;
-import whatfix.traffic.multidestination.RoutePathHelper;
 import whatfix.traffic.singledestination.Orbit;
 import whatfix.traffic.singledestination.Vehicle;
-import whatfix.traffic.singledestination.Weather;
 import whatfix.traffic.singledestination.Vehicle.VehicleName;
+import whatfix.traffic.singledestination.Weather;
 
+/**
+ * This class helps to provide default inputs to the program
+ **/
 class InputUtil {
 
-	public static void main(String[] args) {
-		getRouteMatrixNew();
-	}
-
-	public static RoutePath[][] getRouteMatrixNew() {
-
-		// 0 - silkboard
-		// 1 - marathhalli
-		// 2 - kr puram
-		int noOfPlaces = 3;
-		RoutePath[][] routeMatrix = new RoutePath[noOfPlaces][noOfPlaces];
-		HashMap<Integer, Location> locMap = new HashMap<>();
+	public static HashMap<Integer, Location> getLocationMap() {
+		HashMap<Integer, Location> map = new HashMap<>();
 		Location loc0 = new Location();
 		loc0.setId(0);
 		loc0.addToConnectingLocation(1);
 		loc0.addToConnectingLocation(2);
-		locMap.put(0, loc0);
+		map.put(0, loc0);
 
 		Location loc1 = new Location();
 		loc1.setId(1);
 		loc1.addToConnectingLocation(0);
 		loc1.addToConnectingLocation(2);
-		locMap.put(1, loc1);
+		map.put(1, loc1);
 
 		Location loc2 = new Location();
-		loc2.setId(2);
+		loc2.setId(1);
 		loc2.addToConnectingLocation(0);
 		loc2.addToConnectingLocation(1);
-		locMap.put(2, loc2);
-
-		RoutePath tmp1 = new RoutePath();
-		tmp1.addToListOfOrbits("Orbit1");
-		routeMatrix[0][1] = tmp1;
-		routeMatrix[1][0] = tmp1;
-
-		RoutePath tmp2 = new RoutePath();
-		tmp2.addToListOfOrbits("Orbit2");
-		routeMatrix[0][2] = tmp2;
-		routeMatrix[2][0] = tmp2;
-
-		RoutePathHelper.fillConnectingRouteList(routeMatrix, locMap);
-
-		return routeMatrix;
+		map.put(2, loc2);
+		return map;
 	}
 
 	public static RoutePath[][] getRouteMatrix() {

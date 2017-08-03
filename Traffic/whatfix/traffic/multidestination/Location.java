@@ -3,6 +3,10 @@ package whatfix.traffic.multidestination;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class keeps track of Location & other locations where current location
+ * able to connect
+ */
 public class Location {
 	int id;
 	List<Integer> connectingLocation;

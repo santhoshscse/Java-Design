@@ -3,6 +3,9 @@ package whatfix.traffic.multidestination;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class helps to find out all possible permutations of route
+ */
 public class RouteCombinationUtil {
 	public static void main(String[] args) {
 		List<Integer> list = new ArrayList<>();

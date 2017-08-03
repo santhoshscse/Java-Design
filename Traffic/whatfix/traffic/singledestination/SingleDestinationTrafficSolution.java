@@ -3,6 +3,10 @@ package whatfix.traffic.singledestination;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class helps to find the best route between 2 destinations
+ * 
+ */
 public class SingleDestinationTrafficSolution {
 	public static Route getShortestRoute(List<Orbit> orbitList, List<Vehicle> vehicleList, Weather weather) {
 		float min = -1;
@@ -37,11 +41,11 @@ public class SingleDestinationTrafficSolution {
 	}
 
 	private static void printDebug(String string, float min, Orbit route, Vehicle vehicle) {
-//		if (route == null) {
-//			return;
-//		}
-//		System.out.println(string + " " + min + " " + route + " " + vehicle);
-//		System.out.println();
+		// if (route == null) {
+		// return;
+		// }
+		// System.out.println(string + " " + min + " " + route + " " + vehicle);
+		// System.out.println();
 	}
 
 	public static Route getShortestRoute(List<Orbit> orbitList, Vehicle vehicle, Weather weather) {

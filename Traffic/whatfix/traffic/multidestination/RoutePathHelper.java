@@ -10,12 +10,19 @@ import whatfix.traffic.singledestination.SingleDestinationTrafficSolution;
 import whatfix.traffic.singledestination.Vehicle;
 import whatfix.traffic.singledestination.Weather;
 
+/**
+ * This class helps
+ * 
+ * 1. To memoize best routes from given source to destination 2. To find
+ * possible routes from one destination to another destination in recursive way
+ */
 public class RoutePathHelper {
 
 	public static RoutePath[][] getRouteMatrixForVehicle(RoutePath[][] originalRouteMatrix,
-			HashMap<String, Orbit> orbitMap, Weather weather, Vehicle vehicle) {
+			HashMap<String, Orbit> orbitMap, Weather weather, Vehicle vehicle, HashMap<Integer, Location> locationMap) {
 		RoutePath[][] routeMatrix = originalRouteMatrix.clone();
 		fillBestRoute(routeMatrix, orbitMap, vehicle, weather);
+		fillConnectingRouteList(routeMatrix, locationMap);
 		return routeMatrix;
 	}
 
@@ -37,10 +44,10 @@ public class RoutePathHelper {
 
 	public static String getShortestRoute(RoutePath[][] routeMatrix, HashMap<String, Orbit> orbitMap, Vehicle vehicle,
 			Weather weather, int i, int j, RoutePath tmpRouteMatrix) {
-		Route route = SingleDestinationTrafficSolution.getShortestRoute(getAsOrbitList(tmpRouteMatrix.getListOfOrbits(), orbitMap),
-				vehicle, weather);
+		Route route = SingleDestinationTrafficSolution
+				.getShortestRoute(getAsOrbitList(tmpRouteMatrix.getListOfOrbits(), orbitMap), vehicle, weather);
 		tmpRouteMatrix.setBestOrbit(route.getOrbit().getName());
-//		routeMatrix[j][i].setBestOrbit(route.getOrbit().getName());
+		// routeMatrix[j][i].setBestOrbit(route.getOrbit().getName());
 		return route.getOrbit().getName();
 	}
 
@@ -79,7 +86,7 @@ public class RoutePathHelper {
 		}
 	}
 
-	public static List<Integer> findPossibleWays(int startLoc, int endLoc, List<Integer> path,
+	private static List<Integer> findPossibleWays(int startLoc, int endLoc, List<Integer> path,
 			List<List<Integer>> pathList, HashMap<Integer, Location> locMap) {
 
 		if (startLoc == endLoc) {

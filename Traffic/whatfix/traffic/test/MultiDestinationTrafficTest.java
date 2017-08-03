@@ -35,7 +35,8 @@ public class MultiDestinationTrafficTest {
 
 		int source = 0;
 		BestRoute res = MultiDestinationTrafficSolution.getRouteMapSingleVehicleOption(source, routeMatrix,
-				destinationListToVist, orbitMap, InputUtil.getVehicleList(), InputUtil.getSunnyWeather());
+				destinationListToVist, orbitMap, InputUtil.getVehicleList(), InputUtil.getSunnyWeather(),
+				InputUtil.getLocationMap());
 
 		List<Integer> routePath = res.getRoutePath();
 		List<String> routeList = res.getOrbitList();
@@ -69,7 +70,8 @@ public class MultiDestinationTrafficTest {
 
 		int source = 0;
 		BestRoute res = MultiDestinationTrafficSolution.getRouteMapSingleVehicleOption(source, routeMatrix,
-				destinationListToVist, orbitMap, InputUtil.getVehicleList(), InputUtil.getSunnyWeather());
+				destinationListToVist, orbitMap, InputUtil.getVehicleList(), InputUtil.getSunnyWeather(),
+				InputUtil.getLocationMap());
 
 		List<Integer> routePath = res.getRoutePath();
 		List<String> routeList = res.getOrbitList();

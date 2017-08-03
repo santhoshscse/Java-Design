@@ -9,11 +9,14 @@ import whatfix.traffic.singledestination.SingleDestinationTrafficSolution;
 import whatfix.traffic.singledestination.Vehicle;
 import whatfix.traffic.singledestination.Weather;
 
+/**
+ * This class helps to visit multiple destinations from given source
+ */
 public class MultiDestinationTrafficSolution {
 
 	public static BestRoute getRouteMapSingleVehicleOption(int source, RoutePath[][] originalRouteMatrix,
 			List<Integer> destinationListToVist, HashMap<String, Orbit> orbitMap, List<Vehicle> vehicleList,
-			Weather weather) {
+			Weather weather, HashMap<Integer, Location> locationMap) {
 
 		modifyOrbitListByWeather(orbitMap, weather);
 		List<List<Integer>> routePathList = RouteCombinationUtil.getCombinationList(destinationListToVist);
@@ -21,8 +24,8 @@ public class MultiDestinationTrafficSolution {
 		BestRoute bestRoute = null;
 		for (Vehicle vehicle : vehicleList) {
 
-			RoutePath[][] routeMatrix = RoutePathHelper.getRouteMatrixForVehicle(originalRouteMatrix, orbitMap,
-					weather, vehicle);
+			RoutePath[][] routeMatrix = RoutePathHelper.getRouteMatrixForVehicle(originalRouteMatrix, orbitMap, weather,
+					vehicle, locationMap);
 
 			BestRoute res = findBestRoute(source, orbitMap, weather, routePathList, bestRoute, vehicle, routeMatrix);
 			if (bestRoute == null || bestRoute.getMinDist() > res.getMinDist()) {
@@ -86,8 +89,10 @@ public class MultiDestinationTrafficSolution {
 		for (Integer destination : routePath) {
 
 			if (routeMatrix[start][destination].isDirectRouteAvailable()) {
-//				String bestOrbit = RoutePathHelperUtil.getShortestRoute(routeMatrix, orbitMap, vehicle, weather, start,
-//						destination, routeMatrix[start][destination]);
+				// String bestOrbit =
+				// RoutePathHelperUtil.getShortestRoute(routeMatrix, orbitMap,
+				// vehicle, weather, start,
+				// destination, routeMatrix[start][destination]);
 				String bestOrbit = routeMatrix[start][destination].getBestOrbit();
 
 				Orbit orbit = orbitMap.get(bestOrbit);
