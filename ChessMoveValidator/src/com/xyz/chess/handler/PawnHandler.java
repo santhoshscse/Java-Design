@@ -18,13 +18,13 @@ import com.xyz.chess.util.PieceUtil;
 public class PawnHandler implements PieceHandler {
 
 	@Override
-	public Move validateAndGetMove(ChessBoard board, Square source, Square target, boolean isCapture) throws Exception {
+	public Move validateAndGetMove(Square source, Square target, boolean isCapture) throws Exception {
 
-		Move move = getMove(board, source, target, isCapture);
+		Move move = getMove(source, target, isCapture);
 		if (move == null) {
 			throw new Exception("No move found");
 		}
-		Piece sourcePiece = ChessUtil.getPiece(board, move.getFromFile(), move.getFromRank());
+		Piece sourcePiece = ChessUtil.getPiece(move.getFromFile(), move.getFromRank());
 		Piece targetPiece = ChessUtil.getPiece(board, move.getToFile(), move.getToRank());
 
 		if (PieceUtil.isSameCategory(sourcePiece, targetPiece)) {
@@ -39,28 +39,28 @@ public class PawnHandler implements PieceHandler {
 		return move;
 	}
 
-	private Move getMove(ChessBoard board, Square source, Square target, boolean isCapture) throws Exception {
+	private Move getMove(Square source, Square target, boolean isCapture) throws Exception {
 		int toRankNo = ChessUtil.getAsRankNo(target.getRank());
 		int toFileNo = ChessUtil.getAsFileNo(target.getFile());
 		if (source == null || source.getName().trim().isEmpty()) {
-			return getMove(board, toRankNo, toFileNo, target.getName(), isCapture);
+			return getMove(toRankNo, toFileNo, target.getName(), isCapture);
 		}
 		char sourceFile = source.getFile();
 		char sourceRank = source.getRank();
 		if (sourceFile != Character.MIN_VALUE && sourceRank != Character.MIN_VALUE) {
 			int sourceFileNo = ChessUtil.getAsFileNo(sourceFile);
 			int sourceRankNo = ChessUtil.getAsRankNo(sourceRank);
-			return getMoveWithFileRank(board, sourceFileNo, sourceRankNo, toFileNo, toRankNo, isCapture);
+			return getMoveWithFileRank(sourceFileNo, sourceRankNo, toFileNo, toRankNo, isCapture);
 		}
 
 		if (sourceFile != Character.MIN_VALUE && sourceRank == Character.MIN_VALUE) {
 			int sourceFileNo = ChessUtil.getAsFileNo(sourceFile);
-			return getMoveWithFile(board, sourceFileNo, toFileNo, toRankNo, isCapture);
+			return getMoveWithFile(sourceFileNo, toFileNo, toRankNo, isCapture);
 		}
 
 		if (sourceFile == Character.MIN_VALUE && sourceRank != Character.MIN_VALUE) {
 			int sourceRankNo = ChessUtil.getAsRankNo(sourceRank);
-			return getMoveWithRank(board, sourceRankNo, toFileNo, toRankNo, isCapture);
+			return getMoveWithRank(sourceRankNo, toFileNo, toRankNo, isCapture);
 		}
 		return null;
 	}
@@ -282,28 +282,6 @@ public class PawnHandler implements PieceHandler {
 		}
 		return move;
 
-	}
-
-	@Override
-	public void makeMove(ChessBoard board, Move move) {
-		Piece[][] elements = board.getElements();
-		int fromFile = move.getFromFile();
-		int fromRank = move.getFromRank();
-
-		int toFile = move.getToFile();
-		int toRank = move.getToRank();
-
-		Piece sourcePiece = elements[fromRank][fromFile];
-		elements[toRank][toFile] = sourcePiece;
-		Piece emptyObj = ChessUtil.getEmptyPiece(fromRank, fromFile);
-		elements[fromRank][fromFile] = emptyObj;
-
-		Coordinate asCoordinate = ChessUtil.getAsCoordinate(toRank, toFile);
-
-		HashMap<String, Coordinate> pieceVSLocation = board.getPieceVSLocation();
-		pieceVSLocation.put(sourcePiece.getId(), asCoordinate);
-
-		board.setEnPassant(getEnPassant(move));
 	}
 
 	@Override

@@ -11,10 +11,9 @@ import com.xyz.chess.util.PieceUtil;
  *
  */
 
-public class MoveReader {
+public class CommandReader {
 
-
-	public static Move getMove(ChessBoard board, String input) throws Exception {
+	public static Move getMove(String input) throws Exception {
 		if (input.length() <= 1) {
 			throw new Exception("Invalid input");
 		}
@@ -33,21 +32,21 @@ public class MoveReader {
 		boolean isCapture = (boolean) res[1];
 
 		if (input.isEmpty()) {
-			return PieceHandlerUtil.validateMove(PieceType.P, board, null, target, isCapture);
+			return getAsMove(PieceType.P, null, target, isCapture);
 		}
 		int len = input.length();
 		if (len == 1) {
 			char firstChar = input.charAt(0);
 			if (isPiece(firstChar)) {
-				return PieceHandlerUtil.validateMove(PieceUtil.getType(firstChar), board, null, target, isCapture);
+				return getAsMove(PieceUtil.getType(firstChar), null, target, isCapture);
 			} else if (isFile(firstChar)) {
 				Square source = new Square();
 				source.setFile(firstChar);
-				return PieceHandlerUtil.validateMove(PieceType.P, board, source, target, isCapture);
+				return getAsMove(PieceType.P, source, target, isCapture);
 			} else if (isRank(firstChar)) {
 				Square source = new Square();
 				source.setRank(firstChar);
-				return PieceHandlerUtil.validateMove(PieceType.P, board, source, target, isCapture);
+				return getAsMove(PieceType.P, source, target, isCapture);
 			}
 		} else if (len == 2) {
 			char firstChar = input.charAt(0);
@@ -56,11 +55,11 @@ public class MoveReader {
 				if (isFile(secondChar)) {
 					Square source = new Square();
 					source.setFile(secondChar);
-					return PieceHandlerUtil.validateMove(PieceUtil.getType(firstChar), board, source, target, isCapture);
+					return getAsMove(PieceUtil.getType(firstChar), source, target, isCapture);
 				} else if (isRank(secondChar)) {
 					Square source = new Square();
 					source.setRank(secondChar);
-					return PieceHandlerUtil.validateMove(PieceUtil.getType(firstChar), board, source, target, isCapture);
+					return getAsMove(PieceUtil.getType(firstChar), source, target, isCapture);
 				}
 			} else if (isFile(firstChar)) {
 				char secondChar = input.charAt(1);
@@ -68,7 +67,7 @@ public class MoveReader {
 				source.setFile(firstChar);
 				if (isRank(secondChar)) {
 					source.setRank(secondChar);
-					return PieceHandlerUtil.validateMove(PieceType.P, board, source, target, isCapture);
+					return getAsMove(PieceType.P, source, target, isCapture);
 				}
 			}
 		} else if (len == 3) {
@@ -79,12 +78,11 @@ public class MoveReader {
 				Square source = new Square();
 				source.setFile(fromFile);
 				source.setRank(fromRank);
-				return PieceHandlerUtil.validateMove(PieceUtil.getType(piece), board, source, target, isCapture);
+				return getAsMove(PieceUtil.getType(piece), source, target, isCapture);
 			}
 		}
 		return null;
 	}
-
 
 	/**
 	 * @param firstChar
@@ -121,4 +119,12 @@ public class MoveReader {
 		return false;
 	}
 
+	private static Move getAsMove(PieceType pieceType, Square source, Square target, boolean isCapture) {
+		Move move = new Move();
+		move.setPieceType(pieceType);
+		move.setSource(source);
+		move.setTarget(target);
+		move.setCapture(isCapture);
+		return move;
+	}
 }

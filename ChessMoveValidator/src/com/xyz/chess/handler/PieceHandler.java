@@ -9,9 +9,7 @@ import com.xyz.chess.model.Square;
  */
 public interface PieceHandler {
 
-	Move validateAndGetMove(ChessBoard board, Square source, Square target, boolean isCapture) throws Exception;
-
-	void makeMove(ChessBoard board, Move move);
+	Move validateAndGetMove(Square source, Square target, boolean isCapture) throws Exception;
 
 	String getEnPassant(Move move);
 }
