@@ -1,10 +1,10 @@
 package com.target.chess.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.target.chess.model.Board;
-import com.target.chess.model.Location;
-import com.target.chess.model.PieceType;
+import com.target.chess.model.Move;
 import com.target.chess.model.Player;
 import com.target.chess.util.PlayerUtil;
 
@@ -15,12 +15,13 @@ public class ChessBoardHandler {
 	private String enPassant;
 	private int halfMoveClock;
 	private int fullMoveNo;
+	private List<Move> moveList;
 
 	public ChessBoardHandler() throws Exception {
-		initBoard();
+		init();
 	}
 
-	private void initBoard() throws Exception {
+	private void init() throws Exception {
 		String str = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		String[] strArr = str.split(" ");
 		board = new Board(strArr[0]);
@@ -29,6 +30,7 @@ public class ChessBoardHandler {
 		enPassant = strArr[3];
 		halfMoveClock = Integer.parseInt(strArr[4]);
 		fullMoveNo = Integer.parseInt(strArr[5]);
+		moveList = new ArrayList<>();
 	}
 
 	public String display() {
@@ -42,8 +44,42 @@ public class ChessBoardHandler {
 		return builder.toString();
 	}
 
-	public List<Location> getAllLocationsOfPiece(PieceType pieceType, boolean isWhite) {
-		return board.getAllLocationsOfPiece(pieceType, isWhite);
+	public Board getBoard() throws CloneNotSupportedException {
+		return board.clone();
 	}
 
+	public void makeMove(Move move) throws Exception {
+		makeMoveInBoard(move);
+		updateEnPassant(move);
+		updateNextPlayer(move);
+		updateFullMoveCount(move);
+		addMoveToList(move);
+	}
+
+	private void addMoveToList(Move move) {
+		moveList.add(move);
+	}
+
+	private void updateFullMoveCount(Move move) {
+		if (move.getPlayer() == Player.B) {
+			fullMoveNo++;
+		}
+	}
+
+	private void updateNextPlayer(Move move) {
+
+		if (move.getPlayer() == Player.W) {
+			nextPlayer = Player.B;
+		} else {
+			nextPlayer = Player.W;
+		}
+	}
+
+	private void updateEnPassant(Move move) {
+		enPassant = move.getEnPassant();
+	}
+
+	private void makeMoveInBoard(Move move) {
+		board.movePiece(move.getSourceLocation(), move.getTargetLocation());
+	}
 }

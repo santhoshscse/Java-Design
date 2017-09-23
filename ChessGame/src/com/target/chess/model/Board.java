@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.target.chess.util.PieceUtil;
-import com.target.chess.util.SquareUtil;
 
-public class Board {
+public class Board implements Cloneable {
 
 	private Square[][] elements;
 	private HashMap<String, Location> pieceVSLocation;
@@ -24,22 +23,21 @@ public class Board {
 			String row = strArr[rankNo];
 			for (int fileNo = 0; fileNo < row.length(); fileNo++) {
 				char piece = row.charAt(fileNo);
-				if (piece >= 49 && piece <= 56) {
-					int num = piece - 48;
+				if (piece >= '1' && piece <= '8') {
+					int num = piece - '0';
 					for (int k = 0; k < num; k++) {
 						elements[rankNo][fileNo] = null;
 						fileNo++;
 					}
 				} else {
-					char asFile = getAsFile(fileNo);
-					char asRank = getAsRank(rankNo);
+					char asFile = (char) fileNo;
+					char asRank = (char) rankNo;
 
 					String id = piece + "" + asFile;
 					Location loc = getAsLocation(asFile, asRank);
 					Piece p = getAsPiece(id, piece);
-					Square sq = getAsSquare(loc, p);
 
-					elements[rankNo][fileNo] = SquareUtil.getAsSquare(asFile, asRank, piece, id);
+					elements[rankNo][fileNo] = getAsSquare(loc, p);
 					pieceVSLocation.put(id, loc);
 				}
 			}
@@ -59,26 +57,6 @@ public class Board {
 		loc.setFile(asFile);
 		loc.setRank(asRank);
 		return loc;
-	}
-
-	private int getAsRankNo(char charAt) {
-		return Math.abs(charAt - 49 - 7);
-	}
-
-	private char getAsRank(int j) {
-		return (char) (49 + 7 - j);
-	}
-
-	/**
-	 * @param charAt
-	 * @return
-	 */
-	private int getAsFileNo(char charAt) {
-		return charAt - 97;
-	}
-
-	private char getAsFile(int i) {
-		return (char) (i + 97);
 	}
 
 	private Piece getAsPiece(String id, char pieceName) throws Exception {
@@ -130,4 +108,34 @@ public class Board {
 		}
 		return list;
 	}
+
+	@Override
+	public Board clone() throws CloneNotSupportedException {
+		try {
+			return new Board(this.toFen());
+		} catch (Exception e) {
+			throw new CloneNotSupportedException("Error in cloning");
+		}
+	}
+
+	public Piece getPieceByLocation(Location loc) {
+		int file = loc.getFile() - 'a';
+		int rank = loc.getRank() - '1';
+		return elements[rank][file].getPiece();
+	}
+
+	public void movePiece(Location sourceLocation, Location targetLocation) {
+		int srcFile = sourceLocation.getFile() - 'a';
+		int srcRank = sourceLocation.getRank() - '1';
+
+		int tarFile = targetLocation.getFile() - 'a';
+		int tarRank = targetLocation.getRank() - '1';
+
+		Piece piece = elements[srcRank][srcFile].getPiece();
+		elements[tarRank][tarFile].setPiece(piece);
+		elements[srcRank][srcFile].setPiece(null);
+
+		pieceVSLocation.put(piece.getId(), targetLocation);
+	}
+
 }

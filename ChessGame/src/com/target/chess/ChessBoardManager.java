@@ -2,25 +2,25 @@ package com.target.chess;
 
 import com.target.chess.handler.ChessBoardHandler;
 import com.target.chess.handler.CommandReader;
-import com.target.chess.handler.PieceHandler;
+import com.target.chess.handler.CommandValidator;
 
 public class ChessBoardManager {
 
 	private CommandReader commandReader = null;
-	private PieceHandler pieceHandler = null;
+	private CommandValidator pieceHandler = null;
 	private ChessBoardHandler boardHandler = null;
 
 	public ChessBoardManager() throws Exception {
 		commandReader = new CommandReader();
-		pieceHandler = new PieceHandler();
+		pieceHandler = new CommandValidator();
 		boardHandler = new ChessBoardHandler();
 	}
 
-	public static void move(String input) {
-
+	public void move(String input) {
+		
 	}
 
-	public static String display() {
+	public String display() {
 		return null;
 	}
 }
