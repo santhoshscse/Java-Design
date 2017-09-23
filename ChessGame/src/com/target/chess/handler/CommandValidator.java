@@ -15,7 +15,8 @@ public class CommandValidator {
 		handlers.put(PieceType.P, new PawnMoveValidator());
 	}
 
-	Move validateCommandAndGetMove(PieceType type, Board board, Player player, Command command) throws Exception {
+	public Move validateCommandAndGetMove(PieceType type, Board board, Player player, Command command)
+			throws Exception {
 		return handlers.get(type).validateCommandAndGetMove(board, player, command);
 	}
 }

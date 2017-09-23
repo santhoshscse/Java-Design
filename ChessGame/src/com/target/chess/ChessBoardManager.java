@@ -3,6 +3,8 @@ package com.target.chess;
 import com.target.chess.handler.ChessBoardHandler;
 import com.target.chess.handler.CommandReader;
 import com.target.chess.handler.CommandValidator;
+import com.target.chess.model.Command;
+import com.target.chess.model.Move;
 
 public class ChessBoardManager {
 
@@ -16,11 +18,14 @@ public class ChessBoardManager {
 		boardHandler = new ChessBoardHandler();
 	}
 
-	public void move(String input) {
-		
+	public void move(String input) throws Exception {
+		Command command = commandReader.getAsMoveCommand(input);
+		Move move = pieceHandler.validateCommandAndGetMove(command.getSourcePiece(), boardHandler.getBoard(),
+				boardHandler.getCurrentPlayer(), command);
+		boardHandler.makeMove(move);
 	}
 
 	public String display() {
-		return null;
+		return boardHandler.display();
 	}
 }

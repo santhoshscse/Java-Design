@@ -82,4 +82,8 @@ public class ChessBoardHandler {
 	private void makeMoveInBoard(Move move) {
 		board.movePiece(move.getSourceLocation(), move.getTargetLocation());
 	}
+
+	public Player getCurrentPlayer() {
+		return nextPlayer;
+	}
 }
